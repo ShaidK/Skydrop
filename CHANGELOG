@@ -1,0 +1,19 @@
+commit bd6a6586886e40a2cc3f46ed74dac54c455a964b
+Author: ShaidK <ShaidK@Outlook.com>
+Date:   Thu May 16 16:09:14 2024 +0100
+
+    V0.0.0
+    
+    Initial Commit - Committing initial Files & Folders for the Skydrop Project
+    
+    - Committing File `__init__.py` to associate Folders as Python directory
+    - Committing the initial Files `CHANGELOG`, `LICENSE` & `README.md`
+
+ .gitattributes   | 35 ++++++++++++++++++++++++++
+ .gitignore       | 75 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ CHANGELOG        |  0
+ LICENSE          | 21 ++++++++++++++++
+ README.md        | 53 +++++++++++++++++++++++++++++++++++++++
+ src/__init__.py  | 27 ++++++++++++++++++++
+ test/__init__.py | 27 ++++++++++++++++++++
+ 7 files changed, 238 insertions(+)
