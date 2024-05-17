@@ -19,10 +19,14 @@ skydrop
 |   LICENSE
 |   README.md
 |
-├─── src
+├─── skydrop
 |        __init__.py
+|        api.py
+|
 └─── test
          __init__.py
+         test_api.py
+
 
 ```
 
