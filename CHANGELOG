@@ -1,4 +1,21 @@
-commit bd6a6586886e40a2cc3f46ed74dac54c455a964b
+commit f30acea576ae979edbd4b682a1702f9c5a5d2c03
+Author: ShaidK <ShaidK@Outlook.com>
+Date:   Fri May 17 21:30:52 2024 +0100
+
+    V0.0.1
+    
+    Update Commit - Integrating initial OpenWeatherAPIRequestHandler class
+    
+    - Committing initial integration of the OpenWeatherAPIRequestHandler class
+    - Integrating unit test file to validate url parameter
+
+ README.md                    |  6 ++++-
+ {src => skydrop}/__init__.py |  0
+ skydrop/api.py               | 43 +++++++++++++++++++++++++++++++++
+ test/test_api.py             | 57 ++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 105 insertions(+), 1 deletion(-)
+
+commit d47047b5c2b74ca3d9947d41e1e61527243465a9
 Author: ShaidK <ShaidK@Outlook.com>
 Date:   Thu May 16 16:09:14 2024 +0100
 
@@ -11,9 +28,9 @@ Date:   Thu May 16 16:09:14 2024 +0100
 
  .gitattributes   | 35 ++++++++++++++++++++++++++
  .gitignore       | 75 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- CHANGELOG        |  0
+ CHANGELOG        | 19 ++++++++++++++
  LICENSE          | 21 ++++++++++++++++
  README.md        | 53 +++++++++++++++++++++++++++++++++++++++
  src/__init__.py  | 27 ++++++++++++++++++++
  test/__init__.py | 27 ++++++++++++++++++++
- 7 files changed, 238 insertions(+)
+ 7 files changed, 257 insertions(+)
