@@ -28,7 +28,8 @@
 # SOFTWARE.
 #
 
-import validators
+import validators, requests
+from retry import retry
 
 class OpenWeatherAPIRequestHandler(object):
     """
@@ -41,3 +42,14 @@ class OpenWeatherAPIRequestHandler(object):
             raise ValueError(f"The parameter [url] has failed validation: [{url}]")
         
         self._url = url
+    
+    @retry((requests.ConnectTimeout), tries = 5, delay = 2, backoff = 5)
+    def __get_request(self) -> requests.Response:
+        """
+            Note: The following function is used to call External API Endpoints. It has applied 
+            retry logic which it will retry any failed Connection Timeout when calling the  API 
+
+            return
+                response : requests.Response 
+        """
+        pass

@@ -28,9 +28,6 @@
 # SOFTWARE.
 #
 
-import sys
-print(sys.path)
-
 from skydrop.api import OpenWeatherAPIRequestHandler
 
 from parameterized import parameterized

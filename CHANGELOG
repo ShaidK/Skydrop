@@ -1,6 +1,23 @@
-commit f30acea576ae979edbd4b682a1702f9c5a5d2c03
+commit ca5d216813f6394849e10686a7e9d3178a38c704
 Author: ShaidK <ShaidK@Outlook.com>
-Date:   Fri May 17 21:30:52 2024 +0100
+Date:   Sat May 18 12:31:10 2024 +0100
+
+    V0.0.2
+    
+    Update Commit - Integrating additional function within OpenWeatherAPIRequestHandler class
+    
+    - Integrating template Function `get_request` with additional retry decorator logic
+    - Integrated File `requirements.txt` for the venv functionality
+
+ .vscode/settings.json |  6 ++++++
+ requirements.txt      | 10 ++++++++++
+ skydrop/api.py        | 14 +++++++++++++-
+ test/test_api.py      |  3 ---
+ 4 files changed, 29 insertions(+), 4 deletions(-)
+
+commit f6ae57530dda033a5cc22a1bbe80280281ead4e2
+Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>
+Date:   Fri May 17 21:35:24 2024 +0100
 
     V0.0.1
     
@@ -9,11 +26,12 @@ Date:   Fri May 17 21:30:52 2024 +0100
     - Committing initial integration of the OpenWeatherAPIRequestHandler class
     - Integrating unit test file to validate url parameter
 
+ CHANGELOG                    | 23 +++++++++++++++---
  README.md                    |  6 ++++-
  {src => skydrop}/__init__.py |  0
  skydrop/api.py               | 43 +++++++++++++++++++++++++++++++++
  test/test_api.py             | 57 ++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 105 insertions(+), 1 deletion(-)
+ 5 files changed, 125 insertions(+), 4 deletions(-)
 
 commit d47047b5c2b74ca3d9947d41e1e61527243465a9
 Author: ShaidK <ShaidK@Outlook.com>
