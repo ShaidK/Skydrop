@@ -18,6 +18,7 @@ skydrop
 |   CHANGELOG
 |   LICENSE
 |   README.md
+|   requirements.txt
 |
 ├─── skydrop
 |        __init__.py
@@ -26,8 +27,26 @@ skydrop
 └─── test
          __init__.py
          test_api.py
+```
 
+**PROJECT DEPENDENCIES**
 
+_The following Project Dependencies are required for the Skydrop Project in 
+order to execute & run the Project:_
+
+```
+certifi==2024.2.2
+charset-normalizer==3.3.2
+decorator==5.1.1
+idna==3.7
+parameterized==0.9.0
+py==1.11.0
+PyYAML==6.0.1
+requests==2.31.0
+responses==0.25.0
+retry==0.9.2
+urllib3==2.2.1
+validators==0.28.1
 ```
 
 **LICENSE**

@@ -29,10 +29,11 @@
 #
 
 from skydrop.api import OpenWeatherAPIRequestHandler
+from skydrop.error import APIRequestError
 
 from parameterized import parameterized
 
-import unittest
+import unittest, responses
 
 class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
     """
@@ -40,6 +41,9 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
 
         - GIVEN__Invalid_URL__WHEN__Initialising_Request_Handler__THEN__Raise_ValueError 
     """
+
+    def setUp(self) -> None:
+        self.valid_uri = "https://randomurl.com"
 
     @parameterized.expand([
         ( None ), ( str() ), ( "invalid_url" )
@@ -49,6 +53,32 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
             OpenWeatherAPIRequestHandler(invalid_url)
         
         self.assertEqual(value_err.exception.__str__(), f"The parameter [url] has failed validation: [{invalid_url}]")
+
+    @responses.activate
+    def test__GIVEN__Success_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError(self):
+        responses.add(responses.GET, self.valid_uri, json = { "code" : "Success" }, status = 200)
+
+        obj = OpenWeatherAPIRequestHandler(self.valid_uri).obtain_weather()
+        
+        self.assertEqual(obj.status_code, 200)
+
+    @responses.activate
+    def test__GIVEN__Not_Found_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError(self):
+        responses.add(responses.GET, self.valid_uri, json = { "code" : "Not Found" }, status = 404)
+
+        with self.assertRaises(APIRequestError) as api_err:
+            OpenWeatherAPIRequestHandler(self.valid_uri).obtain_weather()
+        
+        self.assertEqual(api_err.exception.status_code, 404)
+
+    @responses.activate
+    def test__GIVEN__Bad_Request_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError(self):
+        responses.add(responses.GET, self.valid_uri, json = { "code" : "Not Found" }, status = 400)
+
+        with self.assertRaises(APIRequestError) as api_err:
+            OpenWeatherAPIRequestHandler(self.valid_uri).obtain_weather()
+        
+        self.assertEqual(api_err.exception.status_code, 400)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -1,6 +1,24 @@
-commit ca5d216813f6394849e10686a7e9d3178a38c704
+commit 2f782814dff65ba386de8726e580c12e172d9b0b
 Author: ShaidK <ShaidK@Outlook.com>
-Date:   Sat May 18 12:31:10 2024 +0100
+Date:   Sun May 19 10:20:45 2024 +0100
+
+    V0.0.3
+    
+    Update Commit - Integrating HTTP Exception Handling logic within `OpenWeatherAPIRequestHandler class`
+    
+    - Integrated HTTP Exception Handling Logic within the Function `get_request`
+    - Integrated new custom Exception `APIRequestError`
+
+ README.md        | 19 +++++++++++++++++++
+ requirements.txt |  2 ++
+ skydrop/api.py   | 16 +++++++++++++++-
+ skydrop/error.py | 38 ++++++++++++++++++++++++++++++++++++++
+ test/test_api.py | 32 +++++++++++++++++++++++++++++++-
+ 5 files changed, 105 insertions(+), 2 deletions(-)
+
+commit 5fd5e321a8d07d0ecb38844cbad23909a3f7fb7b
+Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>
+Date:   Sat May 18 12:40:56 2024 +0100
 
     V0.0.2
     
@@ -10,10 +28,11 @@ Date:   Sat May 18 12:31:10 2024 +0100
     - Integrated File `requirements.txt` for the venv functionality
 
  .vscode/settings.json |  6 ++++++
+ CHANGELOG             | 24 +++++++++++++++++++++---
  requirements.txt      | 10 ++++++++++
  skydrop/api.py        | 14 +++++++++++++-
  test/test_api.py      |  3 ---
- 4 files changed, 29 insertions(+), 4 deletions(-)
+ 5 files changed, 50 insertions(+), 7 deletions(-)
 
 commit f6ae57530dda033a5cc22a1bbe80280281ead4e2
 Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>
