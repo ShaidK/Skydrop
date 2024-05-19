@@ -28,6 +28,8 @@
 # SOFTWARE.
 #
 
+from skydrop.error import APIRequestError
+
 import validators, requests
 from retry import retry
 
@@ -43,6 +45,9 @@ class OpenWeatherAPIRequestHandler(object):
         
         self._url = url
     
+    def obtain_weather(self):
+        return self.__get_request()
+
     @retry((requests.ConnectTimeout), tries = 5, delay = 2, backoff = 5)
     def __get_request(self) -> requests.Response:
         """
@@ -52,4 +57,13 @@ class OpenWeatherAPIRequestHandler(object):
             return
                 response : requests.Response 
         """
-        pass
+        try:
+            response = requests.get(self._url)
+            response.raise_for_status()
+        except requests.HTTPError:
+            if response.status_code == 404:
+                raise APIRequestError(status_code = 404)
+            if response.status_code == 400:
+                raise APIRequestError(status_code = 400)
+        
+        return response
