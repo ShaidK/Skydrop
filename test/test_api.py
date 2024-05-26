@@ -33,7 +33,7 @@ from skydrop.error import APIRequestError
 
 from parameterized import parameterized
 
-import unittest, responses
+import unittest, responses, uuid
 
 class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
     """
@@ -44,21 +44,23 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
 
     def setUp(self) -> None:
         self.valid_uri = "https://randomurl.com"
+        self.uid = str(uuid.uuid1())
+        self.key = str(uuid.uuid1())
 
     @parameterized.expand([
         ( None ), ( str() ), ( "invalid_url" )
     ])
     def test__GIVEN__Invalid_URL__WHEN__Initialising_Request_Handler__THEN__Raise_ValueError(self, invalid_url):
         with self.assertRaises(ValueError) as value_err:
-            OpenWeatherAPIRequestHandler(invalid_url)
+            OpenWeatherAPIRequestHandler(self.uid, invalid_url, self.key)
         
-        self.assertEqual(value_err.exception.__str__(), f"The parameter [url] has failed validation: [{invalid_url}]")
+        self.assertEqual(value_err.exception.__str__(), f"\t {self.uid} - The parameter [url] has failed validation: [{invalid_url}]")
 
     @responses.activate
     def test__GIVEN__Success_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError(self):
         responses.add(responses.GET, self.valid_uri, json = { "code" : "Success" }, status = 200)
 
-        obj = OpenWeatherAPIRequestHandler(self.valid_uri).obtain_weather()
+        obj = OpenWeatherAPIRequestHandler(self.uid, self.valid_uri, self.key).obtain_weather()
         
         self.assertEqual(obj.status_code, 200)
 
@@ -67,16 +69,16 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
         responses.add(responses.GET, self.valid_uri, json = { "code" : "Not Found" }, status = 404)
 
         with self.assertRaises(APIRequestError) as api_err:
-            OpenWeatherAPIRequestHandler(self.valid_uri).obtain_weather()
+            OpenWeatherAPIRequestHandler(self.uid, self.valid_uri, self.key).obtain_weather()
         
         self.assertEqual(api_err.exception.status_code, 404)
 
     @responses.activate
     def test__GIVEN__Bad_Request_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError(self):
-        responses.add(responses.GET, self.valid_uri, json = { "code" : "Not Found" }, status = 400)
+        responses.add(responses.GET, self.valid_uri, json = { "code" : "Bad Request" }, status = 400)
 
         with self.assertRaises(APIRequestError) as api_err:
-            OpenWeatherAPIRequestHandler(self.valid_uri).obtain_weather()
+            OpenWeatherAPIRequestHandler(self.uid, self.valid_uri, self.key).obtain_weather()
         
         self.assertEqual(api_err.exception.status_code, 400)
 
