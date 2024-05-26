@@ -33,6 +33,6 @@ class APIRequestError(Exception):
         Note: The following class is used to represent an Exception which is raised when calling an
         External API Endpoint 
     """
-    def __init__(self, status_code, *args: object) -> None:
-        super().__init__(*args)
+    def __init__(self, uid : str, status_code : int) -> None:
+        super().__init__(f"\t {uid} - Error raised when calling the External API: {status_code}")
         self.status_code = status_code

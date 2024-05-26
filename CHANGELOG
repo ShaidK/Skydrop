@@ -1,6 +1,25 @@
-commit 2f782814dff65ba386de8726e580c12e172d9b0b
+commit 83db4c317bfebe4da0257da9ce2a9d867e8f90d3
 Author: ShaidK <ShaidK@Outlook.com>
-Date:   Sun May 19 10:20:45 2024 +0100
+Date:   Sun May 26 20:37:54 2024 +0100
+
+    V0.0.4
+    
+    Update Commit - Integrating Logging Module to log different type of Events
+    
+    - Integrated Logging Module `loguru` in order to Log Events which occurred within Project
+    - Abstracted out the API Logic within the `RequestHandlerBase` Class
+
+ .vscode/launch.json | 45 +++++++++++++++++++++++++++++++++++++++++++
+ README.md           |  4 +++-
+ requirements.txt    |  1 +
+ skydrop/api.py      | 55 +++++++++++++++++++++++++++++++----------------------
+ skydrop/error.py    |  4 ++--
+ test/test_api.py    | 16 +++++++++-------
+ 6 files changed, 92 insertions(+), 33 deletions(-)
+
+commit c2510d0e574bdc4b3a2c82e4d1541fa7b211b599
+Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>
+Date:   Sun May 19 10:25:30 2024 +0100
 
     V0.0.3
     
@@ -9,12 +28,13 @@ Date:   Sun May 19 10:20:45 2024 +0100
     - Integrated HTTP Exception Handling Logic within the Function `get_request`
     - Integrated new custom Exception `APIRequestError`
 
+ CHANGELOG        | 25 ++++++++++++++++++++++---
  README.md        | 19 +++++++++++++++++++
  requirements.txt |  2 ++
  skydrop/api.py   | 16 +++++++++++++++-
  skydrop/error.py | 38 ++++++++++++++++++++++++++++++++++++++
  test/test_api.py | 32 +++++++++++++++++++++++++++++++-
- 5 files changed, 105 insertions(+), 2 deletions(-)
+ 6 files changed, 127 insertions(+), 5 deletions(-)
 
 commit 5fd5e321a8d07d0ecb38844cbad23909a3f7fb7b
 Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>

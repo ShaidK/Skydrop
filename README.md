@@ -1,7 +1,7 @@
 **INTEGRATION**
 
 _The Skydrop Project is a Python Module which is used to obtained Weather 
-Conditions & Information based upon a specific Location or Region_
+Conditions & Information based upon a specific Airports Locations_
 
 _The Project itself is written within Python & can be imported within 
 specific Python Projects_
@@ -22,6 +22,7 @@ skydrop
 |
 ├─── skydrop
 |        __init__.py
+|        error.py
 |        api.py
 |
 └─── test
@@ -39,6 +40,7 @@ certifi==2024.2.2
 charset-normalizer==3.3.2
 decorator==5.1.1
 idna==3.7
+loguru==0.7.2
 parameterized==0.9.0
 py==1.11.0
 PyYAML==6.0.1

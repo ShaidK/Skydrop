@@ -31,39 +31,48 @@
 from skydrop.error import APIRequestError
 
 import validators, requests
+
+from loguru import logger
 from retry import retry
 
-class OpenWeatherAPIRequestHandler(object):
+class RequestHandlerBase(object):
+    """
+        Note: The following base class will maintain the logic for calling the External Endpoints 
+    """
+
+    @logger.catch(reraise = True)
+    def __init__(self, uid : str, url : str) -> None:
+        if not (validators.url(url)):
+            raise ValueError(f"\t {uid} - The parameter [url] has failed validation: [{url}]")
+        
+        self._uid = uid
+        self._url = url    
+
+    @retry((requests.ConnectTimeout), tries = 5, delay = 2, backoff = 5)
+    @logger.catch(reraise = True)
+    def _get_request(self) -> requests.Response:
+        logger.debug(f"\t {self._uid} - Calling External API: {self._url}")
+        try:
+            response = requests.get(self._url)
+            response.raise_for_status()
+        except requests.HTTPError as http_err:
+            raise APIRequestError(uid = self._uid,  status_code = http_err.response.status_code)
+            
+        return response
+
+class OpenWeatherAPIRequestHandler(RequestHandlerBase):
     """
         Note: The following class is used to call the API Endpoint to obtained Weather Conditions 
         & Information based upon a specific Location
     """
 
-    def __init__(self, url : str):
-        if not (validators.url(url)):
-            raise ValueError(f"The parameter [url] has failed validation: [{url}]")
-        
-        self._url = url
-    
-    def obtain_weather(self):
-        return self.__get_request()
+    def __init__(self, uid : str,  url : str, key : str) -> None:
+        logger.info(f"\t {uid} - Initialising class [OpenWeatherAPIRequestHandler]")
+        super().__init__(uid, url)
 
-    @retry((requests.ConnectTimeout), tries = 5, delay = 2, backoff = 5)
-    def __get_request(self) -> requests.Response:
-        """
-            Note: The following function is used to call External API Endpoints. It has applied 
-            retry logic which it will retry any failed Connection Timeout when calling the  API 
-
-            return
-                response : requests.Response 
-        """
-        try:
-            response = requests.get(self._url)
-            response.raise_for_status()
-        except requests.HTTPError:
-            if response.status_code == 404:
-                raise APIRequestError(status_code = 404)
-            if response.status_code == 400:
-                raise APIRequestError(status_code = 400)
+        self._key = key
         
-        return response
+    def obtain_weather(self) -> requests.Response:
+        logger.info(f"\t {self._uid} - Calling the Open Weather API Endpoint")
+        return super()._get_request()
+
