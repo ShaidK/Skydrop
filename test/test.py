@@ -33,19 +33,26 @@ from skydrop.error import APIRequestError
 
 from parameterized import parameterized
 
-import unittest, responses, uuid
+import unittest, responses, uuid, json
 
 class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
     """
         Note: The following class maintains the test suite for the following OpenAPIRequestHandler tests:
 
         - GIVEN__Invalid_URL__WHEN__Initialising_Request_Handler__THEN__Raise_ValueError 
+        - GIVEN__Invalid_Longitude__WHEN__Obtaining_Calling_Endpoint__THEN__Raise_ValueError
+        - GIVEN__Invalid_Latitude__WHEN__Obtaining_Calling_Endpoint__THEN__Raise_ValueError
+        - GIVEN__Success_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError
+        - GIVEN__Not_Found_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError
+        - GIVEN__Bad_Request_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError
     """
 
     def setUp(self) -> None:
-        self.valid_uri = "https://randomurl.com"
+        self.url = "https://randomurl.com"
         self.uid = str(uuid.uuid1())
         self.key = str(uuid.uuid1())
+        self.lon = 50.0
+        self.lat = 50.0
 
     @parameterized.expand([
         ( None ), ( str() ), ( "invalid_url" )
@@ -56,31 +63,59 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
         
         self.assertEqual(value_err.exception.__str__(), f"\t {self.uid} - The parameter [url] has failed validation: [{invalid_url}]")
 
+    @parameterized.expand([
+        ( 190.0 ), ( -190.0 ), ( 200.0 ), ( -200.0 )
+    ])
+    def test__GIVEN__Invalid_Longitude__WHEN__Obtaining_Calling_Endpoint__THEN__Raise_ValueError(self, invalid_lon):
+        with self.assertRaises(ValueError) as value_err:
+            OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, invalid_lon)
+        
+        self.assertEqual(value_err.exception.__str__(), f"\t {self.uid} - Invalid Longitude range provided: [{invalid_lon}]")
+
+    @parameterized.expand([
+        ( 95.0 ), ( -95.0 ), ( 100.0 ), ( -100.0 )
+    ])
+    def test__GIVEN__Invalid_Latitude__WHEN__Obtaining_Calling_Endpoint__THEN__Raise_ValueError(self, invalid_lat):
+        with self.assertRaises(ValueError) as value_err:
+            OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(invalid_lat, self.lon)
+        
+        self.assertEqual(value_err.exception.__str__(), f"\t {self.uid} - Invalid Latitude range provided: [{invalid_lat}]")
+
     @responses.activate
     def test__GIVEN__Success_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError(self):
-        responses.add(responses.GET, self.valid_uri, json = { "code" : "Success" }, status = 200)
+        json_response = self.read_json_file("./test/res/open_api_success.json")
+        responses.add(responses.GET, self.url, json = json_response, status = 200)
 
-        obj = OpenWeatherAPIRequestHandler(self.uid, self.valid_uri, self.key).obtain_weather()
+        obj = OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, self.lon)
         
         self.assertEqual(obj.status_code, 200)
+        self.assertEqual(obj.json()["coord"]["lon"], self.lon)
+        self.assertEqual(obj.json()["coord"]["lat"], self.lat)
 
     @responses.activate
     def test__GIVEN__Not_Found_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError(self):
-        responses.add(responses.GET, self.valid_uri, json = { "code" : "Not Found" }, status = 404)
+        responses.add(responses.GET, self.url, json = { "code" : "Not Found" }, status = 404)
 
         with self.assertRaises(APIRequestError) as api_err:
-            OpenWeatherAPIRequestHandler(self.uid, self.valid_uri, self.key).obtain_weather()
+            OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, self.lon)
         
         self.assertEqual(api_err.exception.status_code, 404)
 
     @responses.activate
     def test__GIVEN__Bad_Request_Response__WHEN__Calling_External_Endpoint__THEN__Raise_APIRequestError(self):
-        responses.add(responses.GET, self.valid_uri, json = { "code" : "Bad Request" }, status = 400)
+        responses.add(responses.GET, self.url, json = { "code" : "Bad Request" }, status = 400)
 
         with self.assertRaises(APIRequestError) as api_err:
-            OpenWeatherAPIRequestHandler(self.uid, self.valid_uri, self.key).obtain_weather()
+            OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, self.lon)
         
         self.assertEqual(api_err.exception.status_code, 400)
 
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
+    def read_json_file(self, path : str) -> dict:
+        #
+        # Note: This Function is mainly used within testing so we want to raise the following 
+        # Exception to help debug any issues: 
+        # - json.JSONDecodeError
+        # - FileNotFoundError
+        #
+        with open(path, "r") as json_file:
+            return json.load(json_file)
