@@ -50,10 +50,10 @@ class RequestHandlerBase(object):
 
     @retry((requests.ConnectTimeout), tries = 5, delay = 2, backoff = 5)
     @logger.catch(reraise = True)
-    def _get_request(self) -> requests.Response:
+    def _get_request(self, params : dict = None, **kwargs) -> requests.Response:
         logger.debug(f"\t {self._uid} - Calling External API: {self._url}")
         try:
-            response = requests.get(self._url)
+            response = requests.get(url = self._url, params = params, **kwargs)
             response.raise_for_status()
         except requests.HTTPError as http_err:
             raise APIRequestError(uid = self._uid,  status_code = http_err.response.status_code)
@@ -71,8 +71,19 @@ class OpenWeatherAPIRequestHandler(RequestHandlerBase):
         super().__init__(uid, url)
 
         self._key = key
-        
-    def obtain_weather(self) -> requests.Response:
+
+    @logger.catch(reraise = True)    
+    def obtain_weather(self, lati : float, long : float) -> requests.Response:
         logger.info(f"\t {self._uid} - Calling the Open Weather API Endpoint")
-        return super()._get_request()
+        if not (-180 <= long <= 180):
+            raise ValueError(f"\t {self._uid} - Invalid Longitude range provided: [{long}]")
+
+        if not (-90 <= lati <= 90):
+            raise ValueError(f"\t {self._uid} - Invalid Latitude range provided: [{lati}]")
+
+        return super()._get_request(params = {
+            "appid" : self._key, 
+            "lat" : lati, 
+            "lon" : long
+        })
 

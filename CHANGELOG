@@ -1,6 +1,23 @@
-commit 83db4c317bfebe4da0257da9ce2a9d867e8f90d3
+commit 4a81a690c5bc34cca4a41d9f6ea8cf18f3ced5b1
 Author: ShaidK <ShaidK@Outlook.com>
-Date:   Sun May 26 20:37:54 2024 +0100
+Date:   Mon May 27 12:07:14 2024 +0100
+
+    V0.0.5
+    
+    Update Commit - Integrating additional logic to call the Open Weather API
+    
+    - Integrated additional logic to validate the Latitude & Longitude paramaters
+    - Integrated additional testing with actual Mock API response
+
+ README.md                      | 17 +++++++++++++
+ skydrop/api.py                 | 21 ++++++++++++----
+ test/res/open_api_success.json | 51 +++++++++++++++++++++++++++++++++++++++
+ test/{test_api.py => test.py}  | 55 ++++++++++++++++++++++++++++++++++--------
+ 4 files changed, 129 insertions(+), 15 deletions(-)
+
+commit a7e242c9fb15c512b77e08c65cdc50dcd66fd7df
+Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>
+Date:   Sun May 26 20:41:22 2024 +0100
 
     V0.0.4
     
@@ -10,12 +27,13 @@ Date:   Sun May 26 20:37:54 2024 +0100
     - Abstracted out the API Logic within the `RequestHandlerBase` Class
 
  .vscode/launch.json | 45 +++++++++++++++++++++++++++++++++++++++++++
+ CHANGELOG           | 26 ++++++++++++++++++++++---
  README.md           |  4 +++-
  requirements.txt    |  1 +
  skydrop/api.py      | 55 +++++++++++++++++++++++++++++++----------------------
  skydrop/error.py    |  4 ++--
  test/test_api.py    | 16 +++++++++-------
- 6 files changed, 92 insertions(+), 33 deletions(-)
+ 7 files changed, 115 insertions(+), 36 deletions(-)
 
 commit c2510d0e574bdc4b3a2c82e4d1541fa7b211b599
 Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>

@@ -6,6 +6,23 @@ Conditions & Information based upon a specific Airports Locations_
 _The Project itself is written within Python & can be imported within 
 specific Python Projects_
 
+**DESCRIPTION**
+
+_The Skydrop Project mainly uses the Open Weather API to obtained Weather 
+Conditions based on a given Longitude & Latitude coordinate_
+
+_It uses the Open Weather API known as `Current Weather Data` to obtained 
+Weather Conditions at the current moment of time_
+
+```
+API Endpoint:   https://api.openweathermap.org/data/2.5/weather
+
+Parameters 
+- appid         Paramater used to authenticate the API Call
+- lon           Location Longitude Coordinate
+- lat           Location Latitude  Coordinate           
+```
+
 **PROJECT STRUCTURE**
 
 _The following displays the directory structure of the Skydrop Project_
