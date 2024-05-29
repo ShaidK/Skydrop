@@ -30,7 +30,7 @@ _The following displays the directory structure of the Skydrop Project_
 ```
 skydrop
 |
-|   .gitattrubutes
+|   .gitattributes
 |   .gitignore
 |   CHANGELOG
 |   LICENSE
@@ -43,6 +43,8 @@ skydrop
 |        api.py
 |
 └─── test
+         res
+             open_api_success.json
          __init__.py
          test_api.py
 ```
@@ -60,12 +62,29 @@ idna==3.7
 loguru==0.7.2
 parameterized==0.9.0
 py==1.11.0
+python-dotenv==1.0.1
 PyYAML==6.0.1
-requests==2.31.0
+requests==2.32.2
 responses==0.25.0
 retry==0.9.2
 urllib3==2.2.1
 validators==0.28.1
+```
+
+**TESTING**
+
+_The Skydrop Project has set of Unit & Integration Test Suites to confirm the 
+functionality of the Project._
+
+_The Integration Test Suite need to be configured by creating the File `.env` 
+at the root directory._
+
+_Within this File you need to configured the Open Weather API URI & API Key
+as shown in the following in order to successfully run the Integration Test:_
+
+```
+OPEN_WEATHER_API_URL="https://api.openweathermap.org/data/2.5/weather?"
+OPEN_WEATHER_API_KEY="<OPEN_WEATHER_API_KEY>"
 ```
 
 **LICENSE**
