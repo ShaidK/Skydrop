@@ -32,12 +32,35 @@ from skydrop.api import OpenWeatherAPIRequestHandler
 from skydrop.error import APIRequestError
 
 from parameterized import parameterized
+from dotenv import dotenv_values
 
 import unittest, responses, uuid, json
 
+class OpenAPIRequestHandler_Integration_TestCategory(unittest.TestCase):
+    """
+        Note: The following class maintains the test suite for the following OpenAPIRequestHandler Integration
+        Tests:
+
+        - GIVEN__A_Latitude_And_Longitude__WHEN__Calling_External_Endpoint__THEN__Return_Successful_Response 
+    """
+
+    def setUp(self):
+        self.key = dotenv_values(".env")["OPEN_WEATHER_API_KEY"]
+        self.url = dotenv_values(".env")["OPEN_WEATHER_API_URL"]
+        self.uid = str(uuid.uuid1())
+        self.lon = 50.0
+        self.lat = 50.0
+
+    def test__GIVEN__A_Latitude_And_Longitude__WHEN__Calling_External_Endpoint__THEN__Return_Successful_Response(self):
+        obj = OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, self.lon)
+
+        self.assertEqual(obj.status_code, 200)
+        self.assertEqual(obj.json()["coord"]["lon"], self.lon)
+        self.assertEqual(obj.json()["coord"]["lat"], self.lat)
+
 class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
     """
-        Note: The following class maintains the test suite for the following OpenAPIRequestHandler tests:
+        Note: The following class maintains the test suite for the following OpenAPIRequestHandler Unit Tests:
 
         - GIVEN__Invalid_URL__WHEN__Initialising_Request_Handler__THEN__Raise_ValueError 
         - GIVEN__Invalid_Longitude__WHEN__Obtaining_Calling_Endpoint__THEN__Raise_ValueError
