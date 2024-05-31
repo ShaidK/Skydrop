@@ -35,6 +35,7 @@ skydrop
 |   CHANGELOG
 |   LICENSE
 |   README.md
+|   pyproject.toml
 |   requirements.txt
 |
 ├─── skydrop
