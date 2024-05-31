@@ -1,6 +1,21 @@
-commit 955ec333ed7b5cb8a7ae19d82dc796b4fa70ab82
+commit 52a1473ed2de5136e54d39066b301df76b12cae0
 Author: ShaidK <ShaidK@Outlook.com>
-Date:   Wed May 29 12:50:00 2024 +0100
+Date:   Fri May 31 09:58:26 2024 +0100
+
+    V0.1.0
+    
+    Update Commit - Integrating Packaging Backend to package the Project
+    
+    - Integrated the Packaging File `pyproject.toml` to package the Skydrop Project
+    - Integrated the Build Backend `hatchling`
+
+ README.md      |  1 +
+ pyproject.toml | 22 ++++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
+
+commit f9c780f94a4e8abd6e52863a7c9a7cb348bc0a51
+Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>
+Date:   Wed May 29 12:52:51 2024 +0100
 
     V0.0.6
     
@@ -9,10 +24,11 @@ Date:   Wed May 29 12:50:00 2024 +0100
     - Integrated the Integration Test to confirm the Logic calling the External API
     - Integrated Python Environment Configuration for testing
 
+ CHANGELOG        | 23 ++++++++++++++++++++---
  README.md        | 23 +++++++++++++++++++++--
  requirements.txt |  3 ++-
  test/test.py     | 25 ++++++++++++++++++++++++-
- 3 files changed, 47 insertions(+), 4 deletions(-)
+ 4 files changed, 67 insertions(+), 7 deletions(-)
 
 commit 0ccf9b03a64d079b40858edf30781718bc81286e
 Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>
