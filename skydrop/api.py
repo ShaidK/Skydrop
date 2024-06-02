@@ -28,37 +28,51 @@
 # SOFTWARE.
 #
 
-from skydrop.error import APIRequestError
+from skydrop.base import EntityBase, RequestHandlerBase
 
-import validators, requests
+import requests
 
 from loguru import logger
-from retry import retry
 
-class RequestHandlerBase(object):
+class Coordinate(EntityBase):
     """
-        Note: The following base class will maintain the logic for calling the External Endpoints 
+        Note: The following class will maintain the Latitude & Longitude Functionality  
     """
+    def __init__(self, uuid : str, lati : float, long : float) -> None:
+        logger.debug(f"\t {uuid} - Initialising class [ Coordinate ]")
+        super().__init__(uuid = uuid)
 
-    @logger.catch(reraise = True)
-    def __init__(self, uid : str, url : str) -> None:
-        if not (validators.url(url)):
-            raise ValueError(f"\t {uid} - The parameter [url] has failed validation: [{url}]")
-        
-        self._uid = uid
-        self._url = url    
+        self.lati = lati 
+        self.long = long
 
-    @retry((requests.ConnectTimeout), tries = 5, delay = 2, backoff = 5)
-    @logger.catch(reraise = True)
-    def _get_request(self, params : dict = None, **kwargs) -> requests.Response:
-        logger.debug(f"\t {self._uid} - Calling External API: {self._url}")
-        try:
-            response = requests.get(url = self._url, params = params, **kwargs)
-            response.raise_for_status()
-        except requests.HTTPError as http_err:
-            raise APIRequestError(uid = self._uid,  status_code = http_err.response.status_code)
-            
-        return response
+    @property
+    def lati(self) -> float:
+        return self._lati
+    
+    @property
+    def long(self) -> float:
+        return self._long
+    
+    @lati.setter
+    def lati(self, obj : float) -> None:
+        if not (-90 <= obj <= 90):
+            raise ValueError(f"\t {self.uuid} - Invalid Latitude range provided: [{obj}]")
+        self._lati = obj
+
+    @long.setter
+    def long(self, obj : float) -> None:
+        if not (-180 <= obj <= 180):
+            raise ValueError(f"\t {self.uuid} - Invalid Longitude range provided: [{obj}]")
+        self._long = obj
+
+    def __eq__(self, obj : object) -> bool:
+        return self.lati == obj.lati and self.long == obj.long 
+    
+    def __ne__(self, obj : object) -> bool:
+        return not self.__eq__(obj)
+
+    def __call__(self) -> dict:
+        return { "lat" : self.lati, "lon" : self.long } 
 
 class OpenWeatherAPIRequestHandler(RequestHandlerBase):
     """
@@ -66,24 +80,27 @@ class OpenWeatherAPIRequestHandler(RequestHandlerBase):
         & Information based upon a specific Location
     """
 
-    def __init__(self, uid : str,  url : str, key : str) -> None:
-        logger.info(f"\t {uid} - Initialising class [OpenWeatherAPIRequestHandler]")
-        super().__init__(uid, url)
+    def __init__(self, uuid : str,  url : str, key : str) -> None:
+        logger.info(f"\t {uuid} - Initialising class [ OpenWeatherAPIRequestHandler ]")
+        super().__init__(uuid, url)
 
-        self._key = key
+        self.key = key
+
+    @property
+    def key(self) -> str:
+        return self._key
+    
+    @key.setter
+    def key(self, obj) -> None:
+        if not obj:
+            raise ValueError(f"\t {self.uuid} - The parameter [key] has failed validation: [{obj}]")
+        self._key = obj
 
     @logger.catch(reraise = True)    
     def obtain_weather(self, lati : float, long : float) -> requests.Response:
-        logger.info(f"\t {self._uid} - Calling the Open Weather API Endpoint")
-        if not (-180 <= long <= 180):
-            raise ValueError(f"\t {self._uid} - Invalid Longitude range provided: [{long}]")
+        logger.info(f"\t {self.uuid} - Calling the Open Weather API Endpoint")
+        params = Coordinate(self.uuid, lati, long).__call__()
+        params["appid"] = self.key
 
-        if not (-90 <= lati <= 90):
-            raise ValueError(f"\t {self._uid} - Invalid Latitude range provided: [{lati}]")
-
-        return super()._get_request(params = {
-            "appid" : self._key, 
-            "lat" : lati, 
-            "lon" : long
-        })
+        return super()._get_request(params = params)
 

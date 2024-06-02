@@ -41,6 +41,7 @@ skydrop
 ├─── skydrop
 |        __init__.py
 |        error.py
+|        base.py
 |        api.py
 |
 └─── test
@@ -56,18 +57,23 @@ _The following Project Dependencies are required for the Skydrop Project in
 order to execute & run the Project:_
 
 ```
+build==1.2.1
 certifi==2024.2.2
 charset-normalizer==3.3.2
+coverage==7.5.3
 decorator==5.1.1
 idna==3.7
 loguru==0.7.2
+packaging==24.0
 parameterized==0.9.0
 py==1.11.0
+pyproject_hooks==1.1.0
 python-dotenv==1.0.1
 PyYAML==6.0.1
 requests==2.32.2
 responses==0.25.0
 retry==0.9.2
+tomli==2.0.1
 urllib3==2.2.1
 validators==0.28.1
 ```

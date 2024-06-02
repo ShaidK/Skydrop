@@ -51,12 +51,16 @@ class OpenAPIRequestHandler_Integration_TestCategory(unittest.TestCase):
         self.lon = 50.0
         self.lat = 50.0
 
-    def test__GIVEN__A_Latitude_And_Longitude__WHEN__Calling_External_Endpoint__THEN__Return_Successful_Response(self):
-        obj = OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, self.lon)
+
+    @parameterized.expand([
+        ( 50.0, 50.0 ), ( 78.1, -34.2 ), ( 10.0, 17.0 ), ( -5.0, 150.0 )
+    ])
+    def test__GIVEN__A_Latitude_And_Longitude__WHEN__Calling_External_Endpoint__THEN__Return_Successful_Response(self, lati : float, long : float):
+        obj = OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(lati, long)
 
         self.assertEqual(obj.status_code, 200)
-        self.assertEqual(obj.json()["coord"]["lon"], self.lon)
-        self.assertEqual(obj.json()["coord"]["lat"], self.lat)
+        self.assertEqual(obj.json()["coord"]["lon"], long)
+        self.assertEqual(obj.json()["coord"]["lat"], lati)
 
 class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
     """
@@ -85,6 +89,15 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
             OpenWeatherAPIRequestHandler(self.uid, invalid_url, self.key)
         
         self.assertEqual(value_err.exception.__str__(), f"\t {self.uid} - The parameter [url] has failed validation: [{invalid_url}]")
+
+    @parameterized.expand([
+        ( None ), ( str() ), ( "" )
+    ])
+    def test__GIVEN__Invalid_API_Key__WHEN__Initialising_Request_Handler__THEN__Raise_ValueError(self, invalid_key):
+        with self.assertRaises(ValueError) as value_err:
+            OpenWeatherAPIRequestHandler(self.uid, self.url, invalid_key)
+        
+        self.assertEqual(value_err.exception.__str__(), f"\t {self.uid} - The parameter [key] has failed validation: [{invalid_key}]")
 
     @parameterized.expand([
         ( 190.0 ), ( -190.0 ), ( 200.0 ), ( -200.0 )

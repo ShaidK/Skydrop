@@ -1,6 +1,25 @@
-commit 52a1473ed2de5136e54d39066b301df76b12cae0
+commit cbdb4f5c750bf6188d656ce0dadda39b3343b283
 Author: ShaidK <ShaidK@Outlook.com>
-Date:   Fri May 31 09:58:26 2024 +0100
+Date:   Sun Jun 2 14:37:04 2024 +0100
+
+    V0.1.1
+    
+    Update Commit - Integrating Properties Accessors Validation Logic
+    
+    - Abstracted the Logic within the Method `__init__` within Properties
+      Accessors
+    - Abstracted the Base class within a seperate File
+
+ README.md        |  6 ++++
+ requirements.txt |  5 +++
+ skydrop/api.py   | 97 +++++++++++++++++++++++++++++++++-----------------------
+ skydrop/base.py  | 79 +++++++++++++++++++++++++++++++++++++++++++++
+ test/test.py     | 21 +++++++++---
+ 5 files changed, 164 insertions(+), 44 deletions(-)
+
+commit 96fc2af5df993f9b7c13a0ffb9b9bf6681098400
+Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>
+Date:   Fri May 31 10:06:58 2024 +0100
 
     V0.1.0
     
@@ -9,9 +28,10 @@ Date:   Fri May 31 09:58:26 2024 +0100
     - Integrated the Packaging File `pyproject.toml` to package the Skydrop Project
     - Integrated the Build Backend `hatchling`
 
+ CHANGELOG      | 22 +++++++++++++++++++---
  README.md      |  1 +
  pyproject.toml | 22 ++++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ 3 files changed, 42 insertions(+), 3 deletions(-)
 
 commit f9c780f94a4e8abd6e52863a7c9a7cb348bc0a51
 Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>
