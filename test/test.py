@@ -1,24 +1,28 @@
 #!/usr/bin/env python
 
+"""
+    TODO: Module dotstring will be written within the next commit
+"""
+
 #
-# File: test_api.py | Note: The following class is used to maintain the testing for the OpenWeatherAPIRequestHandler
+# File: test_api.py | Note: The following classes is used to test the OpenWeatherAPIRequestHandler
 #
 
 #
 # MIT License
-# 
+#
 # Copyright (c) 2024 Shaid Khan
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,6 +32,18 @@
 # SOFTWARE.
 #
 
+#
+# NOTE: Within this File I have disabled specific pylinting as I don't think the
+#       guideline should apply to these Testing
+#       - missing-function-docstring:
+#       - line-too-long
+#       - invalid-name
+#
+
+# pylint: disable=missing-function-docstring
+# pylint: disable=line-too-long
+# pylint: disable=invalid-name
+
 from skydrop.api import OpenWeatherAPIRequestHandler
 from skydrop.error import APIRequestError
 
@@ -36,7 +52,7 @@ from dotenv import dotenv_values
 
 import unittest, responses, uuid, json
 
-class OpenAPIRequestHandler_Integration_TestCategory(unittest.TestCase):
+class RequestHandlerIntegrationTestCategory(unittest.TestCase):
     """
         Note: The following class maintains the test suite for the following OpenAPIRequestHandler Integration
         Tests:
@@ -51,7 +67,6 @@ class OpenAPIRequestHandler_Integration_TestCategory(unittest.TestCase):
         self.lon = 50.0
         self.lat = 50.0
 
-
     @parameterized.expand([
         ( 50.0, 50.0 ), ( 78.1, -34.2 ), ( 10.0, 17.0 ), ( -5.0, 150.0 )
     ])
@@ -62,7 +77,7 @@ class OpenAPIRequestHandler_Integration_TestCategory(unittest.TestCase):
         self.assertEqual(obj.json()["coord"]["lon"], long)
         self.assertEqual(obj.json()["coord"]["lat"], lati)
 
-class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
+class RequestHandlerUnitTestCategory(unittest.TestCase):
     """
         Note: The following class maintains the test suite for the following OpenAPIRequestHandler Unit Tests:
 
@@ -87,7 +102,7 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
     def test__GIVEN__Invalid_URL__WHEN__Initialising_Request_Handler__THEN__Raise_ValueError(self, invalid_url):
         with self.assertRaises(ValueError) as value_err:
             OpenWeatherAPIRequestHandler(self.uid, invalid_url, self.key)
-        
+
         self.assertEqual(value_err.exception.__str__(), f"\t {self.uid} - The parameter [url] has failed validation: [{invalid_url}]")
 
     @parameterized.expand([
@@ -96,7 +111,7 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
     def test__GIVEN__Invalid_API_Key__WHEN__Initialising_Request_Handler__THEN__Raise_ValueError(self, invalid_key):
         with self.assertRaises(ValueError) as value_err:
             OpenWeatherAPIRequestHandler(self.uid, self.url, invalid_key)
-        
+
         self.assertEqual(value_err.exception.__str__(), f"\t {self.uid} - The parameter [key] has failed validation: [{invalid_key}]")
 
     @parameterized.expand([
@@ -105,7 +120,7 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
     def test__GIVEN__Invalid_Longitude__WHEN__Obtaining_Calling_Endpoint__THEN__Raise_ValueError(self, invalid_lon):
         with self.assertRaises(ValueError) as value_err:
             OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, invalid_lon)
-        
+
         self.assertEqual(value_err.exception.__str__(), f"\t {self.uid} - Invalid Longitude range provided: [{invalid_lon}]")
 
     @parameterized.expand([
@@ -114,7 +129,7 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
     def test__GIVEN__Invalid_Latitude__WHEN__Obtaining_Calling_Endpoint__THEN__Raise_ValueError(self, invalid_lat):
         with self.assertRaises(ValueError) as value_err:
             OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(invalid_lat, self.lon)
-        
+
         self.assertEqual(value_err.exception.__str__(), f"\t {self.uid} - Invalid Latitude range provided: [{invalid_lat}]")
 
     @responses.activate
@@ -123,7 +138,7 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
         responses.add(responses.GET, self.url, json = json_response, status = 200)
 
         obj = OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, self.lon)
-        
+
         self.assertEqual(obj.status_code, 200)
         self.assertEqual(obj.json()["coord"]["lon"], self.lon)
         self.assertEqual(obj.json()["coord"]["lat"], self.lat)
@@ -134,7 +149,7 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
 
         with self.assertRaises(APIRequestError) as api_err:
             OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, self.lon)
-        
+
         self.assertEqual(api_err.exception.status_code, 404)
 
     @responses.activate
@@ -143,15 +158,15 @@ class OpenAPIRequestHandler_Unit_TestCategory(unittest.TestCase):
 
         with self.assertRaises(APIRequestError) as api_err:
             OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, self.lon)
-        
+
         self.assertEqual(api_err.exception.status_code, 400)
 
     def read_json_file(self, path : str) -> dict:
         #
-        # Note: This Function is mainly used within testing so we want to raise the following 
-        # Exception to help debug any issues: 
-        # - json.JSONDecodeError
-        # - FileNotFoundError
+        # NOTE: This Function is mainly used within testing so we want to raise the following
+        #       Exception to help debug any issues
+        #       - json.JSONDecodeError
+        #       - FileNotFoundError
         #
-        with open(path, "r") as json_file:
+        with open(file = path, mode = "r", encoding="UTF-8") as json_file:
             return json.load(json_file)
