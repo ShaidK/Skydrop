@@ -1,6 +1,28 @@
-commit cbdb4f5c750bf6188d656ce0dadda39b3343b283
+commit 834ae567984de9b29919daee3a94b04b397b8eaf
 Author: ShaidK <ShaidK@Outlook.com>
-Date:   Sun Jun 2 14:37:04 2024 +0100
+Date:   Thu Jun 6 08:45:39 2024 +0100
+
+    V0.1.2
+    
+    Update Commit - Integrated the linitng module within the Skydrop Project
+    
+    - Integrated the Module `pylint` to confirm the Python Files conform to standards
+    - Updated Project Files with the issues raised when running the Module `pylint`
+
+ .pylintrc           | 648 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ README.md           |  11 +-
+ requirements.txt    |   9 +
+ skydrop/__init__.py |  10 +-
+ skydrop/api.py      |  68 ++++--
+ skydrop/base.py     |  38 ++-
+ skydrop/error.py    |  17 +-
+ test/__init__.py    |  10 +-
+ test/test.py        |  55 +++--
+ 9 files changed, 803 insertions(+), 63 deletions(-)
+
+commit 7dd8319eab982eb1b5750d7e737afd2c5c679d82
+Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>
+Date:   Sun Jun 2 14:39:32 2024 +0100
 
     V0.1.1
     
@@ -10,12 +32,13 @@ Date:   Sun Jun 2 14:37:04 2024 +0100
       Accessors
     - Abstracted the Base class within a seperate File
 
+ CHANGELOG        | 26 +++++++++++++--
  README.md        |  6 ++++
  requirements.txt |  5 +++
  skydrop/api.py   | 97 +++++++++++++++++++++++++++++++++-----------------------
  skydrop/base.py  | 79 +++++++++++++++++++++++++++++++++++++++++++++
  test/test.py     | 21 +++++++++---
- 5 files changed, 164 insertions(+), 44 deletions(-)
+ 6 files changed, 187 insertions(+), 47 deletions(-)
 
 commit 96fc2af5df993f9b7c13a0ffb9b9bf6681098400
 Author: Shaid Khan <100602151+ShaidK@users.noreply.github.com>

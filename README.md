@@ -32,6 +32,7 @@ skydrop
 |
 |   .gitattributes
 |   .gitignore
+|   .pylintrc
 |   CHANGELOG
 |   LICENSE
 |   README.md
@@ -56,24 +57,32 @@ skydrop
 _The following Project Dependencies are required for the Skydrop Project in 
 order to execute & run the Project:_
 
-```
+```astroid==3.2.2
 build==1.2.1
 certifi==2024.2.2
 charset-normalizer==3.3.2
 coverage==7.5.3
 decorator==5.1.1
+dill==0.3.8
 idna==3.7
+isort==5.13.2
 loguru==0.7.2
+mccabe==0.7.0
 packaging==24.0
 parameterized==0.9.0
+platformdirs==4.2.2
 py==1.11.0
+pylint==3.2.2
 pyproject_hooks==1.1.0
 python-dotenv==1.0.1
 PyYAML==6.0.1
 requests==2.32.2
 responses==0.25.0
 retry==0.9.2
+skydrop @ file:///home/shaidk/Documents/skydrop-function/dist/skydrop-0.1.0.tar.gz#sha256=52fd3b2af0b50c842b90b13622c56a9491ce485ff4aa4e7aedd65746bc9701a3
 tomli==2.0.1
+tomlkit==0.12.5
+typing_extensions==4.12.1
 urllib3==2.2.1
 validators==0.28.1
 ```
