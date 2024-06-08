@@ -34,12 +34,13 @@
 
 class APIRequestError(Exception):
     """
-        Note: The following class is used to represent an Exception which is raised when calling an
-        External API Endpoint 
+        NOTE: The following class is used to represent an Exception which is raised when calling an
+              External API Endpoint 
     """
     def __init__(self, uid : str, status_code : int) -> None:
         """
-            TODO: Function docstring will be written within the next commit
+            NOTE: Initialise the APIRequestException with a unique uuid & raise API Exception 
+                  status code 
         """
         super().__init__(f"\t {uid} - Error raised when calling the External API: {status_code}")
         self.status_code = status_code

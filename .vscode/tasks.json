@@ -1,0 +1,161 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label":   "Build Skydrop Project",
+            "detail":  "Task to run the build process of the Skydrop Project",
+            "type":    "shell",
+            "group": {
+                "isDefault": true,
+                "kind": "build"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "python_version",
+                "pip_install",
+                "lint_project",
+                "lint_test",
+                "test_unit",
+                "test_integration",
+                "coverage_discover",
+                "coverage_report",
+                "build_package"
+            ],
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Test Skydrop Projecy",
+            "detail":  "Task to run the test process of the Skydrop Project",
+            "type": "shell",
+            "group": {
+                "isDefault": true,
+                "kind": "test"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "lint_project",
+                "lint_test",
+                "test_unit",
+                "test_integration",
+                "coverage_discover",
+                "coverage_report",
+            ],
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label":   "python_version",
+            "detail":  "Task to display the Python Installation Version",
+            "type":    "shell",
+            "linux": {
+                "command": "python -VV"
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label":   "pip_install",
+            "detail":  "Task to install the Python Package from File: `requirement.txt`",
+            "type":    "shell",
+            "linux": {
+                "command": "pip install -r ${workspaceFolder}/requirements.txt"
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared"
+            },
+        },
+        {
+            "label":  "lint_project",
+            "detail": "Task to lint the Project Python Files",
+            "type":   "shell",
+            "linux": {
+                "command": "pylint ${workspaceFolder}/skydrop",
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label":  "lint_test",
+            "detail": "Task to lint the Project Test Files",
+            "type":   "shell",
+            "linux": {
+                "command": "pylint ${workspaceFolder}/test",
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label":  "test_unit",
+            "detail": "Task to execute the Project Unit Tests",
+            "type":   "shell",
+            "linux": {
+                "command": "python -m unittest -k Unit"
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label":  "test_integration",
+            "detail": "Task to execute the Project Integration Tests",
+            "type":   "shell",
+            "linux": {
+                "command": "python -m unittest -k Integration"
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label":  "coverage_discover",
+            "detail": "Task to discover tests to generate the Coverage Report",
+            "type":   "shell",
+            "linux": {
+                "command": "coverage run -m unittest discover"
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared",
+                "echo": false
+            }
+        },
+        {
+            "label":  "coverage_report",
+            "detail": "Task to generate the coverage report for the Python Project",
+            "type":   "shell",
+            "linux": {
+                "command": "coverage report -m"
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared",
+            }
+        },
+        {
+            "label":  "build_package",
+            "detail": "Task to generate the build package for the Python Project",
+            "type":   "shell",
+            "linux": {
+                "command": "python -m build"
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "panel": "shared",
+            }
+        }
+    ]
+}
