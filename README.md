@@ -8,11 +8,11 @@ specific Python Projects_
 
 **DESCRIPTION**
 
-_The Skydrop Project mainly uses the Open Weather API to obtained Weather 
-Conditions based on a given Longitude & Latitude coordinate_
+_The Skydrop Project mainly uses the [Open Weather API](https://openweathermap.org/api) 
+to obtained Weather Conditions based on a given Longitude & Latitude coordinate_
 
-_It uses the Open Weather API known as `Current Weather Data` to obtained 
-Weather Conditions at the current moment of time_
+_It uses the API known as `Current Weather Data` to obtained Weather Conditions at 
+the current moment of time_
 
 ```
 API Endpoint:   https://api.openweathermap.org/data/2.5/weather
@@ -25,7 +25,7 @@ Parameters
 
 **PROJECT STRUCTURE**
 
-_The following displays the directory structure of the Skydrop Project_
+The following displays the directory structure of the Skydrop Project
 
 ```
 skydrop
@@ -38,6 +38,11 @@ skydrop
 |   README.md
 |   pyproject.toml
 |   requirements.txt
+|
+├─── .vscode
+|        settings.json
+|        launch.json
+|        tasks.json
 |
 ├─── skydrop
 |        __init__.py
@@ -57,7 +62,8 @@ skydrop
 _The following Project Dependencies are required for the Skydrop Project in 
 order to execute & run the Project:_
 
-```astroid==3.2.2
+```
+astroid==3.2.2
 build==1.2.1
 certifi==2024.2.2
 charset-normalizer==3.3.2
@@ -79,7 +85,6 @@ PyYAML==6.0.1
 requests==2.32.2
 responses==0.25.0
 retry==0.9.2
-skydrop @ file:///home/shaidk/Documents/skydrop-function/dist/skydrop-0.1.0.tar.gz#sha256=52fd3b2af0b50c842b90b13622c56a9491ce485ff4aa4e7aedd65746bc9701a3
 tomli==2.0.1
 tomlkit==0.12.5
 typing_extensions==4.12.1
@@ -87,16 +92,25 @@ urllib3==2.2.1
 validators==0.28.1
 ```
 
+**PROJECT BUILD**
+
+The Skydrop Project has been automated to execute linting, testing, coverage &
+packaging of the Python Files using the `vscode` file [`tasks.json`](https://code.visualstudio.com/docs/editor/tasks)
+
+This can be executed using the following Keyboard Shortcut when Project is open
+within Visual Studio Code: `CTRL` + `SHIFT` + `B`
+
 **TESTING**
 
-_The Skydrop Project has set of Unit & Integration Test Suites to confirm the 
-functionality of the Project._
+The Skydrop Project has set of Unit & Integration Test Suites to confirm the 
+functionality of the Project.
 
-_The Integration Test Suite need to be configured by creating the File `.env` 
-at the root directory._
+The Integration Test Suite need to be configured by creating the File `.env` 
+at the root directory.
 
-_Within this File you need to configured the Open Weather API URI & API Key
-as shown in the following in order to successfully run the Integration Test:_
+Within this File you need to configured the [Open Weather API](https://openweathermap.org/api) 
+URI & API Key as shown in the following in order to successfully run the 
+Integration Test:
 
 ```
 OPEN_WEATHER_API_URL="https://api.openweathermap.org/data/2.5/weather?"
