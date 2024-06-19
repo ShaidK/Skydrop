@@ -2,11 +2,11 @@
 
 """
     DESCRIPTION
-        The following Module contains the set of Exceptions which are raised within Skydrop
-        Project
+        The following Module contains the set of Entities which are used to represent 
+        objects within the Skydrop Project
 
     FILE
-        error.py
+        entity.py
 
     AUTHOR
         Shaid Khan
@@ -36,7 +36,7 @@
 """
 
 #
-# File: error.py | Note: The following classes are used to maintain custom raise Exceptions
+# File: entity.py | Note: The following classes are used to represent DTO objects
 #
 
 #
@@ -63,48 +63,29 @@
 # SOFTWARE.
 #
 
-class InvalidAirportCodeError(Exception):
+from skydrop import dataclass
+
+from typing import ClassVar
+
+@dataclass
+class Airport:
     """
         DESCRIPTION
-            The following class is used to represent an Exception which is raised when the IATA &
-            ICAO Code fail validation
+            The following class is used to hold information & represent single Airport
+
+        ATTRIBUTES
+            name : <str>
+                The name of the Airport
+
+            iata : <str>
+                The unique IATA Code
+
+            icao : <str>
+                The unique ICAO Code 
     """
+    ICAO_REGEX_PATTERN : ClassVar[str] = r'^[A-Z0-9]{4}$'
+    IATA_REGEX_PATTERN : ClassVar[str] = r'^[A-Z]{3}$'
 
-    def __init__(self, uuid : str, airport_code : str, *args : object) -> None:
-        """
-            DESCRIPTION
-                Initialise the InvalidAirportCodeError with a unique uuid & failed Airport 
-                Code
-
-            PARAMETER
-                uuid : <str>
-                    The unique id which is used to aggregate application logs
-
-                airport_code  : <int>
-                    The failed validated IATA or ICAO code 
-        """
-        super().__init__(f"\t {uuid} - Error raised when Airport Code fail Validation: [ {airport_code} ]", *args)
-        self.airport_code = airport_code
-
-class APIRequestError(Exception):
-    """
-        DESCRIPTION
-            The following class is used to represent an Exception which is raised when calling an
-            External API Endpoint 
-    """
-
-    def __init__(self, uuid : str, status_code : int, *args : object) -> None:
-        """
-            DESCRIPTION
-                Initialise the APIRequestException with a unique uuid & raise API Exception 
-                status code
-
-            PARAMETER
-                uuid : <str>
-                    The unique id which is used to aggregate application logs
-
-                status_code : <int>
-                    The raised status code of a failed API request call
-        """
-        super().__init__(f"\t {uuid} - Error raised when calling the API: [ {status_code} ]", *args)
-        self.status_code = status_code
+    name : str = ''
+    iata : str = ''
+    icao : str = ''

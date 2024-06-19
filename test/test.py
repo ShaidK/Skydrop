@@ -44,8 +44,9 @@
 # pylint: disable=line-too-long
 # pylint: disable=invalid-name
 
+from skydrop.error import APIRequestError, InvalidAirportCodeError
+from skydrop.data import OpenAirportDatasource
 from skydrop.api import OpenWeatherAPIRequestHandler
-from skydrop.error import APIRequestError
 
 from parameterized import parameterized
 from dotenv import dotenv_values
@@ -160,6 +161,36 @@ class RequestHandlerUnitTestCategory(unittest.TestCase):
             OpenWeatherAPIRequestHandler(self.uid, self.url, self.key).obtain_weather(self.lat, self.lon)
 
         self.assertEqual(api_err.exception.status_code, 400)
+
+    @parameterized.expand([
+        ( "LONG_STRING" ), ( "S" )
+    ])
+    def test__GIVEN__An_Invalid_IATA_Code__WHEN__Obtaining_The_Airport_Information__THEN__Raise_InvalidAirportCodeError(self, invalid_iata):
+        with self.assertRaises(InvalidAirportCodeError) as code_error:
+            OpenAirportDatasource(self.uid).get_airport_by_iata(iata = invalid_iata)
+
+        self.assertEqual(code_error.exception.__str__(), f"\t {self.uid} - Error raised when Airport Code fail Validation: [ {invalid_iata} ]")
+
+    @parameterized.expand([
+        ( "LONG_STRING" ), ( "S" )
+    ])
+    def test__GIVEN__An_Invalid_ICAO_Code__WHEN__Obtaining_The_Airport_Information__THEN__Raise_InvalidAirportCodeError(self, invalid_icao):
+        with self.assertRaises(InvalidAirportCodeError) as code_error:
+            OpenAirportDatasource(self.uid).get_airport_by_icao(icao = invalid_icao)
+
+        self.assertEqual(code_error.exception.__str__(), f"\t {self.uid} - Error raised when Airport Code fail Validation: [ {invalid_icao} ]")
+
+    @parameterized.expand([
+        ( "BHX" ), ( "LHR" )
+    ])
+    def test__GIVEN__An_Valid_IATA_Code__WHEN__Obtaining_The_Airport_Information__THEN__InvalidAirportCodeError_Not_Raised(self, valid_iata):
+        OpenAirportDatasource(self.uid).get_airport_by_iata(iata = valid_iata)
+
+    @parameterized.expand([
+        ( "EGBB" ), ( "EGLL" )
+    ])
+    def test__GIVEN__An_Valid_ICAO_Code__WHEN__Obtaining_The_Airport_Information__THEN__InvalidAirportCodeError_Not_Raised(self, valid_icao):
+        OpenAirportDatasource(self.uid).get_airport_by_icao(icao = valid_icao)
 
     def read_json_file(self, path : str) -> dict:
         #
