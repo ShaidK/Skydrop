@@ -1,7 +1,38 @@
 #!/usr/bin/env python
 
 """
-    TODO: Module docstring will be written within the next commit
+    DESCRIPTION
+        The following Module contains the base classes which are used within the Skydrop
+        Project
+
+    FILE
+        base.py
+
+    AUTHOR
+        Shaid Khan
+
+    LICENSE
+        MIT License
+
+        Copyright (c) 2024 Shaid Khan
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
 """
 
 #
@@ -33,24 +64,52 @@
 #
 
 from skydrop.error import APIRequestError
+from skydrop import dataclass, logger
+
+from retry import retry
 
 import validators, requests
 
-from loguru import logger
-from retry import retry
-
+@dataclass
 class EntityBase:
     """
-        Note: The following based class will maintain the uuid which is used for tracking within 
-              the Logs  
+        DESCRIPTION
+            The following class is used to represent the base class which is used to retains 
+            the uuid
+
+        ATTRIBUTES
+            uuid : <str>
+                The unique id which is used to aggregate application logs
     """
-    def __init__(self, uuid : str) -> None:
-        logger.debug(f"\t {uuid} - Initialising class [ EntityBase ]")
-        self.uuid = uuid
+    uuid : str
+
+class DatasourceBase(EntityBase):
+    """
+        DESCRIPTION
+            The following class is used to represent the base class to obtained data from an
+            External Datasource
+    """
+
+    def __init__(self, uuid : str):
+        """
+            DESCRIPTION
+                Initialise the DatasourceBase with a unique uuid 
+
+            PARAMETER
+                uuid : <str>
+                    The unique id which is used to aggregate application logs 
+        """
+        super().__init__(uuid)
 
 class RequestHandlerBase(EntityBase):
     """
-        Note: The following base class will maintain the logic for calling the External Endpoints 
+        DESCRIPTION
+            The following class is used to represent the base class which is used to call
+            the External API
+
+        PROPERTIES
+            url : <str>
+                The following string represent the url of the External API
     """
 
     @logger.catch(reraise = True)

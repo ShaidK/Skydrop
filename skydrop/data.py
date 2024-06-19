@@ -2,11 +2,11 @@
 
 """
     DESCRIPTION
-        The following Module contains the set of Exceptions which are raised within Skydrop
-        Project
+        The following Module contains classes which are used to obtained Airport Information
+        from OpenAirportDatasource
 
     FILE
-        error.py
+        data.py
 
     AUTHOR
         Shaid Khan
@@ -36,7 +36,7 @@
 """
 
 #
-# File: error.py | Note: The following classes are used to maintain custom raise Exceptions
+# File: data.py | Note: The following class is used to obtained data from a Datasource
 #
 
 #
@@ -63,48 +63,40 @@
 # SOFTWARE.
 #
 
-class InvalidAirportCodeError(Exception):
+from skydrop.error import InvalidAirportCodeError
+from skydrop.base import DatasourceBase
+from skydrop.entity import Airport
+
+import re
+
+class OpenAirportDatasource(DatasourceBase):
     """
         DESCRIPTION
-            The following class is used to represent an Exception which is raised when the IATA &
-            ICAO Code fail validation
+            The following class is used to obtained Airport Information from an External Azure 
+            Cosmos Datasource 
     """
 
-    def __init__(self, uuid : str, airport_code : str, *args : object) -> None:
+    def __init__(self, uuid : str):
         """
             DESCRIPTION
-                Initialise the InvalidAirportCodeError with a unique uuid & failed Airport 
-                Code
+                Initialise the OpenAirportDatasource with a unique uuid 
 
             PARAMETER
                 uuid : <str>
-                    The unique id which is used to aggregate application logs
-
-                airport_code  : <int>
-                    The failed validated IATA or ICAO code 
+                    The unique id which is used to aggregate application logs 
         """
-        super().__init__(f"\t {uuid} - Error raised when Airport Code fail Validation: [ {airport_code} ]", *args)
-        self.airport_code = airport_code
+        super().__init__(uuid)
 
-class APIRequestError(Exception):
-    """
-        DESCRIPTION
-            The following class is used to represent an Exception which is raised when calling an
-            External API Endpoint 
-    """
-
-    def __init__(self, uuid : str, status_code : int, *args : object) -> None:
+    def get_airport_by_iata(self, iata : str) -> Airport:
         """
-            DESCRIPTION
-                Initialise the APIRequestException with a unique uuid & raise API Exception 
-                status code
-
-            PARAMETER
-                uuid : <str>
-                    The unique id which is used to aggregate application logs
-
-                status_code : <int>
-                    The raised status code of a failed API request call
+            TODO: Function docstring will be written within the next commit
         """
-        super().__init__(f"\t {uuid} - Error raised when calling the API: [ {status_code} ]", *args)
-        self.status_code = status_code
+        if not bool(re.match(Airport.IATA_REGEX_PATTERN, iata)):
+            raise InvalidAirportCodeError(uuid = self.uuid, airport_code = iata)
+     
+    def get_airport_by_icao(self, icao : str) -> Airport:
+        """
+            TODO: Function docstring will be written within the next commit
+        """
+        if not bool(re.match(Airport.ICAO_REGEX_PATTERN, icao)):
+            raise InvalidAirportCodeError(uuid = self.uuid, airport_code = icao)
