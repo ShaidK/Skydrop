@@ -1,18 +1,18 @@
 **INTEGRATION**
 
-_The Skydrop Project is a Python Module which is used to obtained Weather 
-Conditions & Information based upon a specific Airports Locations_
+The Skydrop Project is a Python Module which is used to obtained Weather 
+Conditions & Information based upon a specific Airports Locations
 
-_The Project itself is written within Python & can be imported within 
-specific Python Projects_
+The Project itself is written within Python & can be imported within 
+specific Python Projects
 
 **DESCRIPTION**
 
-_The Skydrop Project mainly uses the [Open Weather API](https://openweathermap.org/api) 
-to obtained Weather Conditions based on a given Longitude & Latitude coordinate_
+The Skydrop Project mainly uses the [Open Weather API](https://openweathermap.org/api) 
+to obtained Weather Conditions based on a given Longitude & Latitude coordinate
 
-_It uses the API known as `Current Weather Data` to obtained Weather Conditions at 
-the current moment of time_
+It uses the API known as `Current Weather Data` to obtained Weather Conditions at 
+the current moment of time
 
 ```
 API Endpoint:   https://api.openweathermap.org/data/2.5/weather
@@ -38,6 +38,10 @@ skydrop
 |   README.md
 |   pyproject.toml
 |   requirements.txt
+|
+├─── .github
+|        workflows
+|            build-pipeline.yaml
 |
 ├─── .vscode
 |        settings.json
@@ -88,7 +92,7 @@ retry==0.9.2
 tomli==2.0.1
 tomlkit==0.12.5
 typing_extensions==4.12.1
-urllib3==2.2.1
+urllib3==2.2.2
 validators==0.28.1
 ```
 
@@ -116,6 +120,17 @@ Integration Test:
 OPEN_WEATHER_API_URL="https://api.openweathermap.org/data/2.5/weather?"
 OPEN_WEATHER_API_KEY="<OPEN_WEATHER_API_KEY>"
 ```
+
+**PROJECT CI PIPELINE**
+
+The Skydrop Project has been configured to run a Continous Integration 
+Pipeline to build the Project during Pull Request or pushes to the 
+Branch: `build` 
+
+The Build Pipeline will execute the following set of steps:
+
+- _Download Project Repository_
+  - _This checkout the Skydrop Project repository within the GitHub Hosted agents_
 
 **LICENSE**
 
